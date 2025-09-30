@@ -17,25 +17,34 @@ int openWindow(HINSTANCE hInstance, int nCmdShow) {
   RegisterClass(&wc);
 
   HWND hwnd = CreateWindowEx(0, CLASS_NAME, "C-Pong", WS_OVERLAPPEDWINDOW,
-                             CW_USEDEFAULT, CW_USEDEFAULT, HEIGHT, WIDTH, NULL,
-                             NULL, hInstance, NULL);
+                             CW_USEDEFAULT, CW_USEDEFAULT, WIN_HEIGHT,
+                             WIN_WIDTH, NULL, NULL, hInstance, NULL);
 
-  if (hwnd == NULL)
+  if (hwnd == NULL) {
     return 0;
+  }
 
   ShowWindow(hwnd, nCmdShow);
 
   MSG msg = {0};
-  while (GetMessage(&msg, NULL, 0, 0)) {
-    PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
-    if (msg.message == WM_QUIT)
-      break;
-    TranslateMessage(&msg);
-    DispatchMessage(&msg);
+  DWORD lastTime = GetTickCount();
 
-    update();
+  while (1) {
+    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+      if (msg.message == WM_QUIT) {
+        return 0;
+      }
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
 
-    draw();
+    DWORD currentTime = GetTickCount();
+    if (currentTime - lastTime >= FRAME_TIME) {
+      update();
+      draw();
+      InvalidateRect(hwnd, NULL, FALSE);
+      lastTime += FRAME_TIME;
+    }
   }
 
   return 0;
@@ -56,8 +65,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
     bmi.bmiHeader.biBitCount = 24; // RGB
     bmi.bmiHeader.biCompression = BI_RGB;
 
-    StretchDIBits(hdc, 0, 0, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT, bitmap, &bmi,
-                  DIB_RGB_COLORS, SRCCOPY);
+    StretchDIBits(hdc, 0, 0, WIN_WIDTH, WIN_HEIGHT, 0, 0, WIDTH, HEIGHT, bitmap,
+                  &bmi, DIB_RGB_COLORS, SRCCOPY);
 
     EndPaint(hwnd, &ps);
   }
