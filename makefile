@@ -6,7 +6,10 @@ SRCS = $(shell find . -name "*.c")
 OBJS = $(SRCS:.c=.o)
 TARGET = Main.exe
 
+.PHONY: all clean rebuild
+
 all: $(TARGET)
+	@find . -name "*.o" -exec rm -f {} +
 
 $(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
@@ -15,5 +18,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(TARGET)
-#
+	@find . -name "*.o" -delete
+	@rm -f $(TARGET)
+
+rebuild: clean all
