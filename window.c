@@ -23,14 +23,19 @@ int openWindow(HINSTANCE hInstance, int nCmdShow) {
   if (hwnd == NULL)
     return 0;
 
-  draw();
-
   ShowWindow(hwnd, nCmdShow);
 
   MSG msg = {0};
   while (GetMessage(&msg, NULL, 0, 0)) {
+    PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
+    if (msg.message == WM_QUIT)
+      break;
     TranslateMessage(&msg);
     DispatchMessage(&msg);
+
+    update();
+
+    draw();
   }
 
   return 0;
