@@ -5,6 +5,12 @@
 #include "./assets/hitter.h"
 #include "./core/controller/controller.h"
 
+enum Gamestate {
+  ROUND
+};
+
+enum Gamestate gamestate = ROUND;
+
 void player_moveUp() {
   hitter_move(&hitter_1, -1);
 }
@@ -22,11 +28,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 void draw(void) {
   resetFrame();
-  drawSprite(ball);
-  drawSprite(hitter_1.sprite);
+
+  switch (gamestate) {
+    case ROUND:
+      drawSprite(ball);
+      drawSprite(hitter_1.sprite);
+  }
+}
+
+void updateGameRound() {
+  ball_checkCollision(hitter_1);
+  ball_move();
 }
 
 void update(void) {
-  ball_move();
+  switch (gamestate) {
+    case ROUND:
+      updateGameRound();
+      break;
+  }
 }
 

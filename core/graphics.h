@@ -3,6 +3,7 @@
 #include "./math.h"
 #include "./graphics.h"
 #include "./window.h"
+#include <stdbool.h>
 
 typedef struct {
   int red;
@@ -19,4 +20,3 @@ typedef struct {
 void resetFrame();
 void drawPixel(int x, int y, Color color);
 void drawSprite(Sprite sprite);
-

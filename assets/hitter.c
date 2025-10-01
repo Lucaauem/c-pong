@@ -4,8 +4,8 @@
 #include "../core/math.h"
 
 const float hitter_speed = 3.0f;
-const int hitter_height = 5;
-const int hitter_width = 2;
+const int hitter_height = 30;
+const int hitter_width = 4;
 
 Hitter hitter_1 = {
   { { 50, HEIGHT / 2 }, hitter_width, hitter_height }, 
