@@ -1,4 +1,5 @@
 #include "window.h"
+#include "./controller/controller.h"
 #include <iso646.h>
 #include <windef.h>
 #include <windows.h>
@@ -86,6 +87,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
       return 0;
     case WM_DESTROY:
       PostQuitMessage(0);
+      return 0;
+    case WM_CHAR: {
+      char pressed = (char) wParam;
+      handleInput(pressed);
+    }
       return 0;
     default:
       return DefWindowProc(hwnd, uMsg, wParam, lParam);
