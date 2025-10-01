@@ -12,6 +12,8 @@ typedef struct {
 
 typedef struct {
   Vector2 position;
+  int width;
+  int height;
 } Sprite;
 
 void resetFrame();

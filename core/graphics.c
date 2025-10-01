@@ -17,5 +17,10 @@ void drawPixel(int x, int y, Color color) {
 
 void drawSprite(Sprite sprite) {
   Color color = {255, 255, 255};
-  drawPixel(sprite.position.x, sprite.position.y, color);
+
+  for(int i=0; i<sprite.width; i++) {
+    for(int j=0; j<sprite.height; j++) {
+      drawPixel(sprite.position.x + i, sprite.position.y + j, color);
+    }
+  }
 }
