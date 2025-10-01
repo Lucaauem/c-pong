@@ -1,5 +1,6 @@
 #include "window.h"
 #include <iso646.h>
+#include <windef.h>
 #include <windows.h>
 
 unsigned char bitmap[WIDTH * HEIGHT * 3];
@@ -7,6 +8,7 @@ unsigned char bitmap[WIDTH * HEIGHT * 3];
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 int openWindow(HINSTANCE hInstance, int nCmdShow) {
+  SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
   const char CLASS_NAME[] = "pongWindow";
 
   WNDCLASS wc = {0};
@@ -16,13 +18,28 @@ int openWindow(HINSTANCE hInstance, int nCmdShow) {
 
   RegisterClass(&wc);
 
-  HWND hwnd = CreateWindowEx(0, CLASS_NAME, "C-Pong", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, WIN_HEIGHT, WIN_WIDTH, NULL, NULL, hInstance, NULL);
+  RECT rc = {0, 0, WIN_WIDTH, WIN_HEIGHT};
+  AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
+  HWND hwnd = CreateWindowEx(0, CLASS_NAME, "C-Pong", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, WIN_WIDTH, WIN_HEIGHT, NULL, NULL, hInstance, NULL);
 
   if (hwnd == NULL) {
     return 0;
   }
 
   ShowWindow(hwnd, nCmdShow);
+  
+  // Adjust client window
+  RECT cr;
+  GetClientRect(hwnd, &cr);
+  int dx = WIN_WIDTH - (cr.right - cr.left);
+  int dy = WIN_HEIGHT - (cr.bottom - cr.top);
+
+  if(dx != 0 || dy != 0) {
+    RECT wr;
+    GetWindowRect(hwnd, &wr);
+    SetWindowPos(hwnd, NULL, 0, 0, (wr.right - wr.left) + dx, (wr.bottom - wr.top) + dy, SWP_NOMOVE | SWP_NOZORDER);
+  }
 
   MSG msg = {0};
   DWORD lastTime = GetTickCount();

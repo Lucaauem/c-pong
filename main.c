@@ -1,9 +1,7 @@
 #include "./core/window.h"
 #include "./core/graphics.h"
-#include "./core/math.h"
 #include <windows.h>
-
-Sprite sprite = { {0,0} };
+#include "./assets/ball.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
   return openWindow(hInstance, nCmdShow);
@@ -11,8 +9,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 void draw(void) {
   resetFrame();
-  drawSprite(sprite);
+  drawSprite(ball);
 }
 
-void update(void) { sprite.position.x++; }
+void update(void) {
+  ball_move();
+}
 

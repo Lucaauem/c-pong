@@ -4,9 +4,6 @@
 #include "./graphics.h"
 #include "./window.h"
 
-#define SPRITE_HEIGHT 8
-#define SPRITE_WIDTH 8
-
 typedef struct {
   int red;
   int green;

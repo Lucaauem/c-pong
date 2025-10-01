@@ -2,10 +2,10 @@
 
 #include <windows.h>
 
-#define WIDTH 240
+#define WIDTH 256
 #define HEIGHT 240
-#define WIN_WIDTH 480
-#define WIN_HEIGHT 480
+#define WIN_WIDTH 1024
+#define WIN_HEIGHT 960
 #define TARGET_FPS 30
 #define FRAME_TIME 1000 / TARGET_FPS
 
