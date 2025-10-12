@@ -1,7 +1,6 @@
 #include "controller.h"
-#include <stdio.h>
-#include <ctype.h>
-#include <stdio.h>
+#include "SDL_keycode.h"
+#include <SDL2/SDL.h>
 
 void (*function_onDown)() = NULL;
 void (*function_onUp)() = NULL;
@@ -22,19 +21,19 @@ void setEvent_onRight(void (*fp)()) {
 
 }
 
-void handleInput(char c) {
-  char input = tolower(c);
-
+void handleInput(SDL_KeyCode input) {
   switch (input) {
-    case 'w':
+    case SDLK_w:
       if (function_onUp != NULL) {
         function_onUp();
       }
       break;
-    case 's':
+    case SDLK_s:
       if (function_onDown != NULL) {
         function_onDown();
       }
+      break;
+    default:
       break;
   }
 }

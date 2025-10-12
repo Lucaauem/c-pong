@@ -1,10 +1,10 @@
-CC = x86_64-w64-mingw32-gcc
-CFLAGS = -Wall -O2
-LDFLAGS = -lgdi32
+CC = gcc
+CFLAGS = -Wall -O2 `sdl2-config --cflags`
+LDFLAGS = `sdl2-config --libs`
 
 SRCS = $(shell find . -name "*.c")
 OBJS = $(SRCS:.c=.o)
-TARGET = Main.exe
+TARGET = Main
 
 .PHONY: all clean rebuild
 

@@ -1,6 +1,5 @@
 #include "./core/window.h"
 #include "./core/graphics.h"
-#include <windows.h>
 #include "./assets/ball.h"
 #include "./assets/hitter.h"
 #include "./core/controller/controller.h"
@@ -19,14 +18,7 @@ void player_moveDown() {
   hitter_move(&hitter_1, 1);
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-  setEvent_onUp(player_moveUp);
-  setEvent_onDown(player_moveDown);
-
-  return openWindow(hInstance, nCmdShow);
-}
-
-void draw(void) {
+void draw() {
   resetFrame();
 
   switch (gamestate) {
@@ -41,7 +33,7 @@ void updateGameRound() {
   ball_move();
 }
 
-void update(void) {
+void update() {
   switch (gamestate) {
     case ROUND:
       updateGameRound();
@@ -49,3 +41,12 @@ void update(void) {
   }
 }
 
+int main() {
+  updateFunction = update;
+  drawFunction = draw;
+  setEvent_onDown(player_moveDown);
+  setEvent_onUp(player_moveUp);
+
+  createWindow();
+  return 0;
+}

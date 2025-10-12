@@ -1,6 +1,6 @@
 #pragma once
 
-#include <windows.h>
+#include <SDL2/SDL.h>
 
 #define WIDTH 256
 #define HEIGHT 240
@@ -10,7 +10,7 @@
 #define FRAME_TIME 1000 / TARGET_FPS
 
 extern unsigned char bitmap[WIDTH * HEIGHT * 3];
+extern void (*updateFunction)();
+extern void (*drawFunction)();
 
-int openWindow(HINSTANCE hInstance, int nCmdShow);
-void draw(void);
-void update(void);
+void createWindow();

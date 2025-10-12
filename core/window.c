@@ -1,99 +1,80 @@
 #include "window.h"
+#include "SDL_error.h"
+#include "SDL_pixels.h"
+#include "SDL_render.h"
+#include "SDL_stdinc.h"
+#include "SDL_video.h"
+#include <SDL2/SDL.h>
 #include "./controller/controller.h"
-#include <iso646.h>
-#include <windef.h>
-#include <windows.h>
 
 unsigned char bitmap[WIDTH * HEIGHT * 3];
+void (*updateFunction)();
+void (*drawFunction)();
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-int openWindow(HINSTANCE hInstance, int nCmdShow) {
-  SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-  const char CLASS_NAME[] = "pongWindow";
-
-  WNDCLASS wc = {0};
-  wc.lpfnWndProc = WindowProc;
-  wc.hInstance = hInstance;
-  wc.lpszClassName = CLASS_NAME;
-
-  RegisterClass(&wc);
-
-  RECT rc = {0, 0, WIN_WIDTH, WIN_HEIGHT};
-  AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-
-  HWND hwnd = CreateWindowEx(0, CLASS_NAME, "C-Pong", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, WIN_WIDTH, WIN_HEIGHT, NULL, NULL, hInstance, NULL);
-
-  if (hwnd == NULL) {
-    return 0;
+void createWindow() {
+  if(SDL_Init(SDL_INIT_VIDEO) != 0) {
+    printf("%s\n", SDL_GetError());
+    exit(1);
   }
 
-  ShowWindow(hwnd, nCmdShow);
-  
-  // Adjust client window
-  RECT cr;
-  GetClientRect(hwnd, &cr);
-  int dx = WIN_WIDTH - (cr.right - cr.left);
-  int dy = WIN_HEIGHT - (cr.bottom - cr.top);
+  SDL_Window *win = SDL_CreateWindow(
+    "C-PONG",
+    SDL_WINDOWPOS_CENTERED,
+    SDL_WINDOWPOS_CENTERED,
+    WIN_WIDTH,
+    WIN_HEIGHT,
+    SDL_WINDOW_SHOWN
+  );
 
-  if(dx != 0 || dy != 0) {
-    RECT wr;
-    GetWindowRect(hwnd, &wr);
-    SetWindowPos(hwnd, NULL, 0, 0, (wr.right - wr.left) + dx, (wr.bottom - wr.top) + dy, SWP_NOMOVE | SWP_NOZORDER);
+  if(win == NULL) {
+    printf("%s\n", SDL_GetError());
+    SDL_Quit();
+    exit(1);
   }
 
-  MSG msg = {0};
-  DWORD lastTime = GetTickCount();
+  SDL_Renderer *renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, WIDTH, HEIGHT);
+  SDL_UpdateTexture(texture, NULL, bitmap, WIDTH * 3);
 
-  while (1) {
-    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-      if (msg.message == WM_QUIT) {
-        return 0;
+  Uint32 lastTime = SDL_GetTicks();
+  float accumulator = 0;
+
+  int running = 1;
+  SDL_Event event;
+  while(running) {
+    // Handle DeltaTime
+    Uint32 current = SDL_GetTicks();
+    float dt = (current - lastTime) / 1000.0f;
+    lastTime = current;
+    accumulator += dt;
+
+    while(SDL_PollEvent(&event)) {
+      if (event.type == SDL_QUIT) {
+        running = 0;
       }
-      TranslateMessage(&msg);
-      DispatchMessage(&msg);
+
+      if (event.type == SDL_KEYDOWN) {
+        handleInput(event.key.keysym.sym);
+      }
     }
 
-    DWORD currentTime = GetTickCount();
-    if (currentTime - lastTime >= FRAME_TIME) {
-      update();
-      draw();
-      InvalidateRect(hwnd, NULL, FALSE);
-      lastTime += FRAME_TIME;
+
+    static Uint32 lastDraw = 0;
+    if(current - lastDraw >= FRAME_TIME) {
+      updateFunction(); // TODO: Out of draw block and add DeltaTime
+      drawFunction();
+
+      SDL_UpdateTexture(texture, NULL, bitmap, WIDTH * 3);
+      SDL_RenderClear(renderer);
+      SDL_RenderCopy(renderer, texture, NULL, NULL);
+      SDL_RenderPresent(renderer);
+      
+      lastDraw = current;
     }
   }
 
-  return 0;
-}
-
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-  switch (uMsg) {
-    case WM_PAINT: {
-      PAINTSTRUCT ps;
-      HDC hdc = BeginPaint(hwnd, &ps);
-
-      BITMAPINFO bmi = {0};
-      bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-      bmi.bmiHeader.biWidth = WIDTH;
-      bmi.bmiHeader.biHeight = -HEIGHT;
-      bmi.bmiHeader.biPlanes = 1;
-      bmi.bmiHeader.biBitCount = 24; // RGB
-      bmi.bmiHeader.biCompression = BI_RGB;
-
-      StretchDIBits(hdc, 0, 0, WIN_WIDTH, WIN_HEIGHT, 0, 0, WIDTH, HEIGHT, bitmap, &bmi, DIB_RGB_COLORS, SRCCOPY);
-
-      EndPaint(hwnd, &ps);
-    }
-      return 0;
-    case WM_DESTROY:
-      PostQuitMessage(0);
-      return 0;
-    case WM_CHAR: {
-      char pressed = (char) wParam;
-      handleInput(pressed);
-    }
-      return 0;
-    default:
-      return DefWindowProc(hwnd, uMsg, wParam, lParam);
-  }
+  SDL_DestroyTexture(texture);
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(win);
+  SDL_Quit();
 }

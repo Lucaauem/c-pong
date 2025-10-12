@@ -1,7 +1,6 @@
 #pragma once
 
 #include "./math.h"
-#include "./graphics.h"
 #include "./window.h"
 #include <stdbool.h>
 
