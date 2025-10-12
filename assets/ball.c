@@ -1,21 +1,21 @@
 #include "./ball.h"
-#include "../core/graphics.h"
 #include "../core/math.h"
 #include "hitter.h"
 #include "../core/physics.h"
+#include "../core/graphics/renderer.h"
 
 const float speed = 2.5f;
 const int ball_size = 3;
 
 Vector2 ballAcc = {1, 1};
-Sprite ball = {{WIDTH / 2, HEIGHT / 2}, ball_size, ball_size};
+Sprite ball = { {}, { RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2}}; // TODO:
 
 void ball_move() {
   ball.position.x += (int)(ballAcc.x * speed);
   ball.position.y += (int)(ballAcc.y * speed);
 
-  if(ball.position.x >= WIDTH - ball.width) {
-    ball.position.x = WIDTH - ball.width;
+  if(ball.position.x >= RESOLUTION_WIDTH - ball.texture.width) {
+    ball.position.x = RESOLUTION_WIDTH - ball.texture.width;
     ballAcc.x = -1;
   } else if(ball.position.x <= 0) {
     ball.position.x = 0;
@@ -25,8 +25,8 @@ void ball_move() {
   if(ball.position.y <= 0) {
     ball.position.y = 0;
     ballAcc.y = 1;
-  } else if(ball.position.y >= HEIGHT - ball.height) {
-    ball.position.y = HEIGHT - ball.height;
+  } else if(ball.position.y >= RESOLUTION_HEIGHT - ball.texture.height) {
+    ball.position.y = RESOLUTION_HEIGHT - ball.texture.height;
     ballAcc.y = -1;
   }
 }

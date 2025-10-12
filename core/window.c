@@ -6,8 +6,8 @@
 #include "SDL_video.h"
 #include <SDL2/SDL.h>
 #include "./controller/controller.h"
+#include "./graphics/renderer.h"
 
-unsigned char bitmap[WIDTH * HEIGHT * 3];
 void (*updateFunction)();
 void (*drawFunction)();
 
@@ -33,8 +33,8 @@ void createWindow() {
   }
 
   SDL_Renderer *renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-  SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, WIDTH, HEIGHT);
-  SDL_UpdateTexture(texture, NULL, bitmap, WIDTH * 3);
+  SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, RESOLUTION_WIDTH, RESOLUTION_HEIGHT);
+  SDL_UpdateTexture(texture, NULL, bitmap, RESOLUTION_WIDTH * 3);
 
   Uint32 lastTime = SDL_GetTicks();
   float accumulator = 0;
@@ -64,7 +64,7 @@ void createWindow() {
       updateFunction(); // TODO: Out of draw block and add DeltaTime
       drawFunction();
 
-      SDL_UpdateTexture(texture, NULL, bitmap, WIDTH * 3);
+      SDL_UpdateTexture(texture, NULL, bitmap, RESOLUTION_WIDTH * 3);
       SDL_RenderClear(renderer);
       SDL_RenderCopy(renderer, texture, NULL, NULL);
       SDL_RenderPresent(renderer);

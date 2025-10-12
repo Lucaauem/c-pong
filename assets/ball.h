@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/graphics.h"
+#include "../core/graphics/sprite.h"
 #include "hitter.h"
 
 extern Sprite ball;

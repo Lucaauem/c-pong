@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/graphics.h"
+#include "../core/graphics/sprite.h"
 #include "../core/math.h"
 #include <stdbool.h>
 

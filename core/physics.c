@@ -1,5 +1,5 @@
 #include "physics.h"
-#include "graphics.h"
+#include "./graphics/sprite.h"
 #include <stdbool.h>
 
 bool hitboxCollision(Hitbox box, Hitbox other) {
@@ -9,8 +9,8 @@ bool hitboxCollision(Hitbox box, Hitbox other) {
 Hitbox createHitbox(Sprite sprite) {
   return (Hitbox) {
     sprite.position.x,
-    sprite.position.x + sprite.width,
+    sprite.position.x + sprite.texture.width,
     sprite.position.y,
-    sprite.position.y + sprite.height
+    sprite.position.y + sprite.texture.height
   };
 }

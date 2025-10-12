@@ -1,8 +1,8 @@
 #include "./core/window.h"
-#include "./core/graphics.h"
 #include "./assets/ball.h"
 #include "./assets/hitter.h"
 #include "./core/controller/controller.h"
+#include "./core/graphics/renderer.h"
 
 enum Gamestate {
   ROUND
@@ -23,9 +23,9 @@ void draw() {
 
   switch (gamestate) {
     case ROUND:
-      drawSprite(ball);
-      drawSprite(hitter_1.sprite);
-      drawSprite(hitter_2.sprite);
+      render(ball);
+      render(hitter_1.sprite);
+      render(hitter_2.sprite);
   }
 }
 
@@ -46,6 +46,8 @@ void update() {
 }
 
 int main() {
+  //ball.texture = readTexture("./test.bin"); // FIXME: Texture usage
+
   updateFunction = update;
   drawFunction = draw;
   setEvent_onDown(player_moveDown);
