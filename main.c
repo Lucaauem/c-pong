@@ -25,12 +25,16 @@ void draw() {
     case ROUND:
       drawSprite(ball);
       drawSprite(hitter_1.sprite);
+      drawSprite(hitter_2.sprite);
   }
 }
 
 void updateGameRound() {
   ball_checkCollision(hitter_1);
+  ball_checkCollision(hitter_2);
   ball_move();
+
+  hitter_moveComputer(&hitter_2, ball.position);
 }
 
 void update() {
