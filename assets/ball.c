@@ -1,7 +1,7 @@
 #include "./ball.h"
 #include "../core/math.h"
 #include "hitter.h"
-#include "../core/physics.h"
+#include "../core/physics/hitbox.h"
 #include "../core/graphics/renderer.h"
 
 const float speed = 2.5f;

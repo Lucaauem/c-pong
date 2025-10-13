@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./graphics/sprite.h"
+#include "../graphics/sprite.h"
 #include <stdbool.h>
 
 typedef struct {
