@@ -4,19 +4,31 @@
 #include "./core/controller/controller.h"
 #include "./core/graphics/renderer.h"
 #include "core/graphics/texture.h"
+#include "core/math.h"
+#include <stdbool.h>
 
 enum Gamestate {
   ROUND
 };
 
-enum Gamestate gamestate = ROUND;
+struct Gamepoints {
+  int player1;
+  int player2;
+};
 
-void player_moveUp() {
-  hitter_move(&hitter_1, -1);
-}
+const int goal_distance = 10;
+enum Gamestate gamestate;
+struct Gamepoints points;
 
-void player_moveDown() {
-  hitter_move(&hitter_1, 1);
+void player_moveUp() { hitter_move(&hitter_1, -1); };
+void player_moveDown() { hitter_move(&hitter_1, 1); };
+
+void initGame() {
+  gamestate = ROUND;
+  points = (struct Gamepoints) {0, 0};
+  
+  setEvent_onUp(player_moveUp);
+  setEvent_onDown(player_moveDown);
 }
 
 void draw() {
@@ -30,10 +42,32 @@ void draw() {
   }
 }
 
+void resetRound() {
+  ball.position = (Vector2) { RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2 };
+  hitter_1.sprite.position.y = RESOLUTION_HEIGHT / 2;
+  hitter_2.sprite.position.y = RESOLUTION_HEIGHT / 2;
+}
+
+void checkGoal() {
+  if((ball.position.x > goal_distance) && (ball.position.x < (RESOLUTION_WIDTH - goal_distance))) {
+    return;
+  }
+
+  if(ball.position.x < RESOLUTION_WIDTH / 2) {
+    points.player1++;
+  }
+  if(ball.position.x > RESOLUTION_WIDTH / 2) {
+    points.player2++;
+  }
+
+  resetRound();
+}
+
 void updateGameRound() {
   ball_checkCollision(hitter_1);
   ball_checkCollision(hitter_2);
   ball_move();
+  checkGoal();
 
   hitter_moveComputer(&hitter_2, ball.position);
 }
@@ -51,10 +85,9 @@ int main() {
   hitter_1.sprite.texture = readTexture("./ressources/sprites/hitter.bin");
   hitter_2.sprite.texture = readTexture("./ressources/sprites/hitter.bin");
 
+  initGame();
   updateFunction = update;
   drawFunction = draw;
-  setEvent_onDown(player_moveDown);
-  setEvent_onUp(player_moveUp);
 
   createWindow();
   return 0;
