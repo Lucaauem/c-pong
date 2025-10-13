@@ -4,23 +4,12 @@
 
 unsigned char bitmap[RESOLUTION_WIDTH * RESOLUTION_HEIGHT * 3];
 
-void render(Sprite sprite) {
-  for(int i=0; i<8; i++) {
-    for(int j=0; j<8; j++) {
-      drawPixel(sprite.position.x + i, sprite.position.y + j, (Color) {255, 255, 255});
-    }
-  }
-
-  return;
-  // TODO: Texture handling
-  //
-  for(int i=0; i<sprite.texture.width; i++) {
-    for(int j=0; i<sprite.texture.height; j++) {
-      // TODO: Only draw when bit is 0
-
-      int pixelX = sprite.position.x + i;
-      int pixelY = sprite.position.y + j;
-      drawPixel(pixelX, pixelY, sprite.texture.color);
+void render(Sprite* sprite) {
+  for(int j=0; j<sprite->texture.height; j++) {
+    for(int i=0; i<sprite->texture.width; i++) {
+      if(sprite->texture.bitmap[j] & (1 << i)) {
+        drawPixel(sprite->position.x + i, sprite->position.y + j, (Color){255, 255, 255});
+      }
     }
   }
 }

@@ -8,6 +8,6 @@
 
 extern unsigned char bitmap[RESOLUTION_WIDTH * RESOLUTION_HEIGHT * 3];
 
-void render(Sprite sprite);
+void render(Sprite* sprite);
 void resetFrame();
 void drawPixel(int x, int y, Color color);

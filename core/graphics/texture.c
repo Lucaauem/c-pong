@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 Texture readTexture(char path[]) {
-  Color color = { 255, 255, 255}; // TODO: Include real color handling
+  Color color = {255, 255, 255}; // TODO: Include real color handling
   FILE *file = fopen(path, "rb");
 
   if (file == NULL) {
@@ -14,12 +14,11 @@ Texture readTexture(char path[]) {
   long size = ftell(file);
   rewind(file);
 
-  unsigned char *buffer = (unsigned char*) malloc(size);
-  
+  unsigned char *buffer = (unsigned char *)malloc(size);
   fread(buffer, 1, size, file);
 
   fclose(file);
 
   // TODO: Size of Texture
-  return (Texture) { buffer, 8, 8, color };
+  return (Texture){buffer, 8, size, color};
 }

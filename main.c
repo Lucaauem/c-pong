@@ -3,6 +3,7 @@
 #include "./assets/hitter.h"
 #include "./core/controller/controller.h"
 #include "./core/graphics/renderer.h"
+#include "core/graphics/texture.h"
 
 enum Gamestate {
   ROUND
@@ -23,9 +24,9 @@ void draw() {
 
   switch (gamestate) {
     case ROUND:
-      render(ball);
-      render(hitter_1.sprite);
-      render(hitter_2.sprite);
+      render(&ball);
+      render(&hitter_1.sprite);
+      render(&hitter_2.sprite);
   }
 }
 
@@ -46,7 +47,9 @@ void update() {
 }
 
 int main() {
-  //ball.texture = readTexture("./test.bin"); // FIXME: Texture usage
+  ball.texture = readTexture("./test.bin");
+  hitter_1.sprite.texture = readTexture("./hitter.bin");
+  hitter_2.sprite.texture = readTexture("./hitter.bin");
 
   updateFunction = update;
   drawFunction = draw;
