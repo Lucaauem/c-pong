@@ -85,7 +85,7 @@ void update() {
 }
 
 int main() {
-  ball.texture = readTexture("./ressources/sprites/test.bin");
+  ball.texture = readTexture("./ressources/sprites/ball.bin");
   hitter_1.object.texture = readTexture("./ressources/sprites/hitter.bin");
   hitter_2.object.texture = readTexture("./ressources/sprites/hitter.bin");
 

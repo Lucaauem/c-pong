@@ -10,5 +10,8 @@ void object_move(Object* object, Vector2 direction) {
   object->position.y += direction.y;
 
   // Update hitbox
-  object->hitbox = createHitbox(*object);
+  object->hitbox.x1 += direction.x;
+  object->hitbox.x2 += direction.x;
+  object->hitbox.y1 += direction.y;
+  object->hitbox.y2 += direction.y;
 }
