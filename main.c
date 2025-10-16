@@ -1,6 +1,7 @@
 #include "./core/window.h"
 #include "./assets/ball.h"
 #include "./assets/hitter.h"
+#include "./assets/scenes/scene.h"
 #include "./core/controller/controller.h"
 #include "./core/graphics/renderer.h"
 #include "core/graphics/texture.h"
@@ -19,6 +20,7 @@ struct Gamepoints {
 const int goal_distance = 10;
 enum Gamestate gamestate;
 struct Gamepoints points;
+Scene scene = { NULL, 0 };
 
 void player_moveUp() { hitter_move(&hitter_1, -1); };
 void player_moveDown() { hitter_move(&hitter_1, 1); };
@@ -26,7 +28,11 @@ void player_moveDown() { hitter_move(&hitter_1, 1); };
 void initGame() {
   gamestate = ROUND;
   points = (struct Gamepoints) {0, 0};
-  
+
+  scene_addObject(&scene, &ball);
+  scene_addObject(&scene, &hitter_1.object);
+  scene_addObject(&scene, &hitter_2.object);
+
   setEvent_onUp(player_moveUp);
   setEvent_onDown(player_moveDown);
 }
@@ -36,9 +42,7 @@ void draw() {
 
   switch (gamestate) {
     case ROUND:
-      render(ball);
-      render(hitter_1.object);
-      render(hitter_2.object);
+      scene_render(scene);
   }
 }
 
@@ -90,5 +94,9 @@ int main() {
   drawFunction = draw;
 
   createWindow();
+
+  // Cleanup
+  scene_delete(&scene);
+  
   return 0;
 }
