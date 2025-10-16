@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_keycode.h>
 
 void setEvent_onUp(void (*fp)());
 void setEvent_onDown(void (*fp)());

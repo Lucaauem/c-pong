@@ -1,11 +1,11 @@
 #include "window.h"
-#include "SDL_error.h"
-#include "SDL_pixels.h"
-#include "SDL_render.h"
-#include "SDL_stdinc.h"
-#include "SDL_video.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_error.h>
 #include <SDL2/SDL_keycode.h>
+#include <SDL2/SDL_pixels.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_stdinc.h>
+#include <SDL2/SDL_video.h>
 #include "./controller/controller.h"
 #include "./graphics/renderer.h"
 
@@ -62,7 +62,6 @@ void createWindow() {
         handleInput(event.key.keysym.sym);
       }
     }
-
 
     static Uint32 lastDraw = 0;
     if(current - lastDraw >= FRAME_TIME) {

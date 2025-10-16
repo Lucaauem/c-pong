@@ -1,5 +1,4 @@
 #include "controller.h"
-#include "SDL_keycode.h"
 #include <SDL2/SDL.h>
 
 void (*function_onDown)() = NULL;
