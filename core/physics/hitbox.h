@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../graphics/sprite.h"
 #include <stdbool.h>
+
+typedef struct Object Object;
 
 typedef struct {
   int x1;
@@ -11,4 +12,4 @@ typedef struct {
 } Hitbox;
 
 bool hitboxCollision(Hitbox box, Hitbox other);
-Hitbox createHitbox(Sprite sprite);
+Hitbox createHitbox(Object object);

@@ -10,14 +10,5 @@ void object_move(Object* object, Vector2 direction) {
   object->position.y += direction.y;
 
   // Update hitbox
-  object->hitbox = object_createHitbox(*object);
-}
-
-Hitbox object_createHitbox(Object object) {
-  return (Hitbox) {
-    object.position.x,
-    object.position.x + 1,
-    object.position.y,
-    object.position.y + 1
-  };
+  object->hitbox = createHitbox(*object);
 }

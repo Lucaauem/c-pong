@@ -1,14 +1,13 @@
 #include "renderer.h"
-#include "./sprite.h"
 #include "./texture.h"
 
 unsigned char bitmap[RESOLUTION_WIDTH * RESOLUTION_HEIGHT * 3];
 
-void render(Sprite* sprite) {
-  for(int j=0; j<sprite->texture.height; j++) {
-    for(int i=0; i<sprite->texture.width; i++) {
-      if(sprite->texture.bitmap[j] & (1 << i)) {
-        drawPixel(sprite->position.x + i, sprite->position.y + j, (Color){255, 255, 255});
+void render(Object object) {
+  for(int j=0; j<object.texture.height; j++) {
+    for(int i=0; i<object.texture.width; i++) {
+      if(object.texture.bitmap[j] & (1 << i)) {
+        drawPixel(object.position.x + i, object.position.y + j, (Color){255, 255, 255});
       }
     }
   }

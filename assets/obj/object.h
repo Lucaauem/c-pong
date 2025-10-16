@@ -13,4 +13,3 @@ typedef struct Object {
 
 bool object_colliding(Object object, Object other);
 void object_move(Object* object, Vector2 direction);
-Hitbox object_createHitbox(Object object);

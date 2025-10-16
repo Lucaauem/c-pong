@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../core/graphics/sprite.h"
+#include "./obj/object.h"
 #include "hitter.h"
 
-extern Sprite ball;
+extern Object ball;
 
 void ball_move();
 void ball_checkCollision(Hitter other);

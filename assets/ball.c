@@ -8,7 +8,7 @@ const float speed = 2.5f;
 const int ball_size = 3;
 
 Vector2 ballAcc = {1, 1};
-Sprite ball = { {}, { RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2}}; // TODO:
+Object ball = { { RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2}, {}, {} };
 
 void ball_move() {
   ball.position.x += (int)(ballAcc.x * speed);
@@ -33,7 +33,7 @@ void ball_move() {
 
 // TODO: Check edge cases when colliding
 void ball_checkCollision(Hitter other) {
-  Hitbox hitterHitbox = createHitbox(other.sprite);
+  Hitbox hitterHitbox = createHitbox(other.object);
   Hitbox ballHitbox = createHitbox(ball);
 
   if (!hitboxCollision(hitterHitbox, ballHitbox)) {

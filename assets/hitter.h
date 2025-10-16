@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../core/graphics/sprite.h"
+#include "./obj/object.h"
 #include "../core/math.h"
 #include <stdbool.h>
 
 #define PADDING_TO_BORDER 25 
 
 typedef struct {
-  Sprite sprite;
+  Object object;
   bool playerControlled;
 } Hitter;
 

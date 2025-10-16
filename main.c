@@ -36,16 +36,16 @@ void draw() {
 
   switch (gamestate) {
     case ROUND:
-      render(&ball);
-      render(&hitter_1.sprite);
-      render(&hitter_2.sprite);
+      render(ball);
+      render(hitter_1.object);
+      render(hitter_2.object);
   }
 }
 
 void resetRound() {
   ball.position = (Vector2) { RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2 };
-  hitter_1.sprite.position.y = RESOLUTION_HEIGHT / 2;
-  hitter_2.sprite.position.y = RESOLUTION_HEIGHT / 2;
+  hitter_1.object.position.y = RESOLUTION_HEIGHT / 2;
+  hitter_2.object.position.y = RESOLUTION_HEIGHT / 2;
 }
 
 void checkGoal() {
@@ -82,8 +82,8 @@ void update() {
 
 int main() {
   ball.texture = readTexture("./ressources/sprites/test.bin");
-  hitter_1.sprite.texture = readTexture("./ressources/sprites/hitter.bin");
-  hitter_2.sprite.texture = readTexture("./ressources/sprites/hitter.bin");
+  hitter_1.object.texture = readTexture("./ressources/sprites/hitter.bin");
+  hitter_2.object.texture = readTexture("./ressources/sprites/hitter.bin");
 
   initGame();
   updateFunction = update;

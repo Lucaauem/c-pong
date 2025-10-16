@@ -5,6 +5,7 @@
 #include "SDL_stdinc.h"
 #include "SDL_video.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_keycode.h>
 #include "./controller/controller.h"
 #include "./graphics/renderer.h"
 
@@ -54,6 +55,10 @@ void createWindow() {
       }
 
       if (event.type == SDL_KEYDOWN) {
+        if(event.key.keysym.sym == SDLK_ESCAPE) {
+          running = 0;
+          break;
+        }
         handleInput(event.key.keysym.sym);
       }
     }

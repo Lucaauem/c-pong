@@ -1,16 +1,16 @@
 #include "hitbox.h"
-#include "../graphics/sprite.h"
+#include "../../assets/obj/object.h"
 #include <stdbool.h>
 
 bool hitboxCollision(Hitbox box, Hitbox other) {
   return (box.x1 < other.x2 && box.x2 > other.x1 && box.y1 < other.y2 && box.y2 > other.y1);
 }
 
-Hitbox createHitbox(Sprite sprite) {
+Hitbox createHitbox(Object object) {
   return (Hitbox) {
-    sprite.position.x,
-    sprite.position.x + sprite.texture.width,
-    sprite.position.y,
-    sprite.position.y + sprite.texture.height
+    object.position.x,
+    object.position.x + object.texture.width,
+    object.position.y,
+    object.position.y + object.texture.height
   };
 }
