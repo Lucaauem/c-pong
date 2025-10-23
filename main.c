@@ -85,9 +85,9 @@ void update() {
 }
 
 int main() {
-  ball.texture = readTexture("./ressources/sprites/ball.bin");
-  hitter_1.object.texture = readTexture("./ressources/sprites/hitter.bin");
-  hitter_2.object.texture = readTexture("./ressources/sprites/hitter.bin");
+  ball.texture = texture_load("./ressources/sprites/ball.png");
+  hitter_1.object.texture = texture_load("./ressources/sprites/hitter.png");
+  hitter_2.object.texture = texture_load("./ressources/sprites/hitter.png");
 
   initGame();
   updateFunction = update;

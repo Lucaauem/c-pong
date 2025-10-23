@@ -1,6 +1,5 @@
-#include "./ball.h"
+#include "ball.h"
 #include "../core/math.h"
-#include "hitter.h"
 #include "../core/physics/hitbox.h"
 #include "../core/graphics/renderer.h"
 
@@ -33,7 +32,7 @@ void ball_move() {
 
 // TODO: Check edge cases when colliding
 void ball_checkCollision(Hitter other) {
-  Hitbox hitterHitbox = createHitbox(other.object, (Vector2){2,20}, (Vector2){2,0});
+  Hitbox hitterHitbox = createHitbox(other.object, (Vector2){2,20}, (Vector2){0,0});
   Hitbox ballHitbox = createHitbox(ball, (Vector2){4,4}, (Vector2){0,0});
 
   if (!hitboxCollision(hitterHitbox, ballHitbox)) {

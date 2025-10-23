@@ -1,24 +1,18 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include "../../libs/stb_image.h"
 #include "texture.h"
-#include <stdio.h>
-#include <stdlib.h>
 
-Texture readTexture(char path[]) {
-  Color color = {255, 255, 255}; // TODO: Include real color handling
-  FILE *file = fopen(path, "rb");
+Texture texture_load(char path[]) {
+  int width;
+  int height;
+  int channels;
 
-  if (file == NULL) {
-    exit(1);
-  }
+  unsigned char* bitmap = stbi_load(path, &width, &height, &channels, 0);
 
-  fseek(file, 0, SEEK_END);
-  long size = ftell(file);
-  rewind(file);
+  return (Texture) {bitmap, width, height, channels};
+}
 
-  unsigned char *buffer = (unsigned char *)malloc(size);
-  fread(buffer, 1, size, file);
-
-  fclose(file);
-
-  // TODO: Size of Texture
-  return (Texture){buffer, 8, size, color};
+void texture_clear(Texture* texture) {
+  stbi_image_free(texture->bitmap);
+  texture->bitmap = NULL;
 }

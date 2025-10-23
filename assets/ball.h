@@ -1,7 +1,7 @@
 #pragma once
 
 #include "./obj/object.h"
-#include "hitter.h"
+#include "./hitter.h"
 
 extern Object ball;
 

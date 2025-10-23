@@ -10,7 +10,8 @@ typedef struct {
   unsigned char* bitmap;
   unsigned int width;
   unsigned int height;
-  Color color;
+  unsigned int channels;
 } Texture;
 
-Texture readTexture(char path[]);
+Texture texture_load(char path[]);
+void texture_clear(Texture* texture);
