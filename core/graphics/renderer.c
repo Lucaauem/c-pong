@@ -10,9 +10,9 @@ void render(Object object) {
       int pixelIndex = (j * texture.width + i) * texture.channels;
 
       Color pixelcolor = (Color) {
-        (int) texture.bitmap[pixelIndex + 0],
+        (int) texture.bitmap[pixelIndex + 2],
         (int) texture.bitmap[pixelIndex + 1],
-        (int) texture.bitmap[pixelIndex + 2]
+        (int) texture.bitmap[pixelIndex + 0]
       };
 
       // Skip pixel if texture sample is transparent
